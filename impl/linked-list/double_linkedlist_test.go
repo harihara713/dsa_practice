@@ -139,8 +139,6 @@ func TestDoublyLinkedList_Delete(t *testing.T) {
 
 			ll := setupList(tt.initial)
 
-			fmt.Printf("Initial ll: %v\n", ll.String())
-
 			_, err := ll.Delete(tt.pos)
 			if tt.expectErr {
 				if err == nil {
@@ -148,8 +146,6 @@ func TestDoublyLinkedList_Delete(t *testing.T) {
 				}
 				return
 			}
-
-			fmt.Printf("after ll: %v\n", ll.String())
 
 			got := listToSlice(ll)
 			if !reflect.DeepEqual(got, tt.final) {

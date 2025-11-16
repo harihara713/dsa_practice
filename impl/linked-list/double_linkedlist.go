@@ -87,6 +87,10 @@ func (l *DoublyLinkedList) Get(pos int) (int, error) {
 		return -1, ErrPositionOutOfBound
 	}
 
+	if l.head == nil {
+		return -1, fmt.Errorf("head is nil")
+	}
+
 	curr := l.head
 	for i := 0; i < pos; i++ {
 		curr = curr.next
