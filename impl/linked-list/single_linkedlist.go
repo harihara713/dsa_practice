@@ -55,6 +55,11 @@ func (l *SinglyLinkedList) Insert(pos int, value int) error {
 	if pos < 0 || pos > l.size {
 		return ErrPositionOutOfBound
 	}
+	// if head at nil
+	if l.head == nil {
+		l.Append(value)
+		return nil
+	}
 
 	node := newSingleNode(value)
 	current := l.head
@@ -97,6 +102,11 @@ func (l *SinglyLinkedList) Delete(pos int) error {
 	if pos < 0 || pos > l.size-1 {
 		return ErrPositionOutOfBound
 	}
+
+	if l.head == nil {
+		return nil
+	}
+
 	// if the position is head node
 	if pos == 0 {
 		temp := l.head
