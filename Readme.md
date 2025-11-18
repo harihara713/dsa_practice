@@ -1,5 +1,7 @@
 # Data Structures (Complete List)
 
+Github repo for best go practices for DSA - [The Algorithms](https://github.com/TheAlgorithms/Go)
+
 ## 1. Linear Data Structures
 
 - Array / Dynamic Array

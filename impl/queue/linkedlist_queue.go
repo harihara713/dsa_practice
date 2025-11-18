@@ -1,4 +1,4 @@
-package main
+package queue
 
 type queueNode struct {
 	value interface{}

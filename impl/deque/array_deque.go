@@ -1,7 +1,8 @@
-package main
+package deque
 
 import "fmt"
 
+// TODO: make it circular
 type ArrayDeque struct {
 	data  []int
 	size  int // capacity
