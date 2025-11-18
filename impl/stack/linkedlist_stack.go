@@ -2,29 +2,29 @@ package stack
 
 import "fmt"
 
-type stackNode struct {
-	value interface{}
-	next  *stackNode
+type stackNode[T any] struct {
+	value T
+	next  *stackNode[T]
 }
 
-type Stack struct {
-	top  *stackNode // points to the top node of the stack
-	size int        // current size of the stack
+type Stack[T any] struct {
+	top  *stackNode[T] // points to the top node of the stack
+	size int           // current size of the stack
 }
 
-func newStackNode(val interface{}) *stackNode {
-	return &stackNode{
+func newStackNode[T any](val T) *stackNode[T] {
+	return &stackNode[T]{
 		value: val,
 		next:  nil,
 	}
 }
 
-func NewStack() *Stack {
-	return &Stack{top: nil, size: 0}
+func NewStack[T any]() *Stack[T] {
+	return &Stack[T]{top: nil, size: 0}
 }
 
 // Push the element into the stack
-func (s *Stack) Push(val interface{}) {
+func (s *Stack[T]) Push(val T) {
 	node := newStackNode(val)
 	// insert at the first for O(1) time complexity operation
 	node.next = s.top
@@ -33,42 +33,44 @@ func (s *Stack) Push(val interface{}) {
 }
 
 // Pop the element from the top
-func (s *Stack) Pop() interface{} {
+func (s *Stack[T]) Pop() (T, bool) {
 	if s.top == nil {
-		return nil
+		var zero T
+		return zero, false
 	}
 
 	popped := s.top
 	s.top = s.top.next
 	s.size--
-	return popped.value
+	return popped.value, true
 }
 
 // Peek the top element from the stack
-func (s *Stack) Peek() interface{} {
+func (s *Stack[T]) Peek() (T, bool) {
 	if s.top == nil {
-		return nil
+		var zero T
+		return zero, false
 	}
 
-	return s.top.value
+	return s.top.value, true
 }
 
 // Check if the stack is full or not
-func (s *Stack) Empty() bool {
+func (s *Stack[T]) Empty() bool {
 	return s.top == nil
 }
 
 // Return the current size of the stack
-func (s *Stack) Size() int {
+func (s *Stack[T]) Size() int {
 	return s.size
 }
 
-func (s *Stack) String() string {
+func (s *Stack[T]) String() string {
 	out := ""
 	curr := s.top
 
 	for curr != nil {
-		out += fmt.Sprintf("%d -> ", curr.value)
+		out += fmt.Sprintf("%v -> ", curr.value)
 		curr = curr.next
 	}
 

@@ -7,36 +7,55 @@ import (
 
 func InfixToPostfix(exp string) string {
 	ans := ""
-	s := NewStack()
+	s := NewStack[rune]()
 
 	for _, r := range exp {
 		// if the rune is the operand then add it to the ans
 		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
 			ans += string(r)
-		} else if r == '(' {
+			continue
+		}
+
+		if r == '(' {
 			s.Push(r)
-		} else if r == ')' {
+			continue
+		}
+
+		if r == ')' {
 			// pop out all the rune till it finds a opening bracket
-			for !s.Empty() && s.Peek() != '(' {
-				ans += string(s.Pop().(rune))
+			for !s.Empty() {
+				top, _ := s.Peek()
+				if top == '(' {
+					break
+				}
+				val, _ := s.Pop()
+				ans += string(val)
 			}
 			// pop (
 			s.Pop()
-		} else {
-			// the operators
-			// if the stack is not empty and priority of rune r is less than the top elements priority then pop and add to answer till
-			// we don't find a top whose priority is less than rune r or stack is empty
-			for !s.Empty() && priority(r) <= priority(s.Peek().(rune)) {
-				ans += string(s.Pop().(rune))
-			}
-			// push to stack
-			s.Push(r)
+			continue
 		}
+
+		// the operators
+		// if the stack is not empty and priority of rune r is less than the top elements priority then pop and add to answer till
+		// we don't find a top whose priority is less than rune r or stack is empty
+		for !s.Empty() {
+			top, _ := s.Peek()
+			if priority(top) < priority(r) {
+				break
+			}
+			val, _ := s.Pop()
+			ans += string(val)
+		}
+		// push to stack
+		s.Push(r)
+
 	}
 
 	// if stack has elements
 	for !s.Empty() {
-		ans += string(s.Pop().(rune))
+		val, _ := s.Pop()
+		ans += string(val)
 	}
 
 	return ans
@@ -50,43 +69,66 @@ func InfixToPrefix(exp string) string {
 		3. reverse the answer
 	*/
 	ans := ""
-	st := NewStack()
+	st := NewStack[rune]()
 
 	exp = reverseExpression(exp)
 
 	for _, r := range exp {
 		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
 			ans += string(r)
-		} else if r == '(' {
+			continue
+		}
+
+		if r == '(' {
 			st.Push(r)
-		} else if r == ')' {
+			continue
+		}
+
+		if r == ')' {
 			// pop out all the rune till it finds a opening bracket
-			for !st.Empty() && st.Peek() != '(' {
-				ans += string(st.Pop().(rune))
+			for !st.Empty() {
+				top, _ := st.Peek()
+				if top == '(' {
+					break
+				}
+				val, _ := st.Pop()
+				ans += string(val)
 			}
 			// pop (
 			st.Pop()
-		} else {
-			// the operators
-			// if the stack is not empty and priority of rune r is less than the top elements priority then pop and add to answer till
-			// we don't find a top whose priority is less than rune r or stack is empty
-			if r == '^' {
-				for !st.Empty() && priority(r) <= priority(st.Peek().(rune)) {
-					ans += string(st.Pop().(rune))
-				}
-			} else {
-				for !st.Empty() && priority(r) < priority(st.Peek().(rune)) {
-					ans += string(st.Pop().(rune))
-				}
-			}
-			// push to stack
-			st.Push(r)
+			continue
 		}
+		// the operators
+		// if the stack is not empty and priority of rune r is less than the top elements priority then pop and add to answer till
+		// we don't find a top whose priority is less than rune r or stack is empty
+		if r == '^' {
+			for !st.Empty() {
+				top, _ := st.Peek()
+				if priority(r) > priority(top) {
+					break
+				}
+				val, _ := st.Pop()
+				ans += string(val)
+			}
+		} else {
+			for !st.Empty() {
+				top, _ := st.Peek()
+				if priority(r) >= priority(top) {
+					break
+				}
+				val, _ := st.Pop()
+				ans += string(val)
+			}
+		}
+		// push to stack
+		st.Push(r)
+
 	}
 
 	// if stack has elements
 	for !st.Empty() {
-		ans += string(st.Pop().(rune))
+		val, _ := st.Pop()
+		ans += string(val)
 	}
 
 	ans = reverseExpression(ans)
@@ -100,72 +142,76 @@ func PostfixToInfix(exp string) string {
 		2. if we encounter an operator then take out two elements from stack then put the operator in between them and wrap it with parenthesis and
 			push back to the stack
 	*/
-	st := NewStack()
+	st := NewStack[string]()
 
 	for _, r := range exp {
 		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
 			st.Push(string(r))
 		} else {
 			// take out two element
-			first := st.Pop()
-			second := st.Pop()
+			first, _ := st.Pop()
+			second, _ := st.Pop()
 			tf := fmt.Sprintf("(%s%s%s)", second, string(r), first)
 			st.Push(tf)
 		}
 	}
 
-	return st.Pop().(string)
+	val, _ := st.Pop()
+	return val
 }
 
 func PrefixToInfix(exp string) string {
-	st := NewStack()
+	st := NewStack[string]()
 	// start from last, reverse order
 	for i := len(exp) - 1; i >= 0; i-- {
 		if unicode.IsLetter(rune(exp[i])) || unicode.IsDigit(rune(exp[i])) {
 			st.Push(string(rune(exp[i])))
 		} else {
-			first := st.Pop()
-			second := st.Pop()
+			first, _ := st.Pop()
+			second, _ := st.Pop()
 			tf := fmt.Sprintf("(%s%s%s)", first, string(rune(exp[i])), second)
 			st.Push(tf)
 		}
 	}
 
-	return st.Pop().(string)
+	val, _ := st.Pop()
+	return val
 }
 
 func PostfixToPrefix(exp string) string {
-	st := NewStack()
+	st := NewStack[string]()
 	for _, r := range exp {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {
 			st.Push(string(r))
 		} else {
 			// take out two
-			f := st.Pop()
-			s := st.Pop()
-			tf := fmt.Sprintf("%s%s%s", string(r), s, f)
+			first, _ := st.Pop()
+			second, _ := st.Pop()
+			tf := fmt.Sprintf("%s%s%s", string(r), second, first)
 			st.Push(tf)
 		}
 	}
 
-	return st.Pop().(string)
+	val, _ := st.Pop()
+	return val
 }
 
 func PrefixToPostfix(exp string) string {
-	st := NewStack()
+	st := NewStack[string]()
 	// start from last, reverse order
 	for i := len(exp) - 1; i >= 0; i-- {
 		if unicode.IsLetter(rune(exp[i])) || unicode.IsDigit(rune(exp[i])) {
 			st.Push(string(rune(exp[i])))
 		} else {
-			first := st.Pop()
-			second := st.Pop()
+			first, _ := st.Pop()
+			second, _ := st.Pop()
 			tf := fmt.Sprintf("%s%s%s", first, second, string(rune(exp[i])))
 			st.Push(tf)
 		}
 	}
 
-	return st.Pop().(string)
+	val, _ := st.Pop()
+	return val
 }
 
 func priority(operator rune) int {

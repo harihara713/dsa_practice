@@ -5,7 +5,7 @@ import (
 )
 
 func TestStackPushPop(t *testing.T) {
-	s := NewStack()
+	s := NewStack[int]()
 
 	// push values
 	s.Push(10)
@@ -17,42 +17,38 @@ func TestStackPushPop(t *testing.T) {
 	}
 
 	// pop 30
-	val := s.Pop()
-	if val == nil || val != 30 {
+	val, ok := s.Pop()
+	if !ok || val != 30 {
 		t.Fatalf("expected 30, got %d", val)
 	}
 
 	// pop 20
-	val = s.Pop()
-	if val == nil || val != 20 {
+	val, ok = s.Pop()
+	if !ok || val != 20 {
 		t.Fatalf("expected 20, got %d", val)
 	}
 
 	// pop 10
-	val = s.Pop()
-	if val == nil || val != 10 {
+	val, ok = s.Pop()
+	if !ok || val != 10 {
 		t.Fatalf("expected 10, got %d", val)
 	}
 
 	// popping when empty
-	val = s.Pop()
-	if val != nil {
+	_, ok = s.Pop()
+	if ok {
 		t.Fatalf("expected nil, got %v", val)
 	}
 }
 
 func TestStackPeek(t *testing.T) {
-	s := NewStack()
+	s := NewStack[int]()
 
 	s.Push(5)
 	s.Push(7)
 
-	val := s.Peek()
-	if val == nil {
-		t.Fatalf("expected 7, got %v", val)
-	}
-
-	if val != 7 {
+	val, ok := s.Peek()
+	if !ok || val != 7 {
 		t.Fatalf("expected 7, got %v", val)
 	}
 
@@ -63,7 +59,7 @@ func TestStackPeek(t *testing.T) {
 }
 
 func TestStackEmpty(t *testing.T) {
-	s := NewStack()
+	s := NewStack[int]()
 
 	if !s.Empty() {
 		t.Fatal("stack should be empty")
@@ -77,7 +73,7 @@ func TestStackEmpty(t *testing.T) {
 }
 
 func TestStackSize(t *testing.T) {
-	s := NewStack()
+	s := NewStack[int]()
 
 	if s.Size() != 0 {
 		t.Fatalf("expected size 0, got %d", s.Size())
@@ -93,7 +89,7 @@ func TestStackSize(t *testing.T) {
 }
 
 func TestStackString(t *testing.T) {
-	s := NewStack()
+	s := NewStack[int]()
 
 	s.Push(1)
 	s.Push(2)
