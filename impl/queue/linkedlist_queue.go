@@ -1,26 +1,34 @@
 package queue
 
-type queueNode struct {
-	value interface{}
-	next  *queueNode
+type queueNode[T any] struct {
+	value T
+	next  *queueNode[T]
 }
 
-type Queue struct {
-	front *queueNode
-	rear  *queueNode
+func (n *queueNode[T]) Value() T {
+	return n.value
+}
+
+func (n *queueNode[T]) Next() *queueNode[T] {
+	return n.next
+}
+
+type Queue[T any] struct {
+	front *queueNode[T]
+	rear  *queueNode[T]
 	size  int // current size of the queue
 }
 
-func newQueueNode(val interface{}) *queueNode {
-	return &queueNode{value: val, next: nil}
+func newQueueNode[T any](val T) *queueNode[T] {
+	return &queueNode[T]{value: val, next: nil}
 }
 
-func NewQueue() *Queue {
-	return &Queue{front: nil, rear: nil, size: 0}
+func NewQueue[T any]() *Queue[T] {
+	return &Queue[T]{front: nil, rear: nil, size: 0}
 }
 
-func (q *Queue) Enqueue(value interface{}) {
-	node := newQueueNode(value)
+func (q *Queue[T]) Enqueue(value T) {
+	node := newQueueNode[T](value)
 	// if the queue is empty
 	if q.front == nil {
 		q.front = node
@@ -34,9 +42,10 @@ func (q *Queue) Enqueue(value interface{}) {
 	q.size++
 }
 
-func (q *Queue) Dequeue() interface{} {
+func (q *Queue[T]) Dequeue() T {
 	if q.front == nil {
-		return nil
+		var z T
+		return z
 	}
 
 	d := q.front
@@ -45,18 +54,19 @@ func (q *Queue) Dequeue() interface{} {
 	return d.value
 }
 
-func (q *Queue) Peek() interface{} {
+func (q *Queue[T]) Peek() T {
 	if q.front == nil {
-		return nil
+		var z T
+		return z
 	}
 
 	return q.front.value
 }
 
-func (q *Queue) Empty() bool {
+func (q *Queue[T]) Empty() bool {
 	return q.front == nil
 }
 
-func (q *Queue) Size() int {
+func (q *Queue[T]) Size() int {
 	return q.size
 }

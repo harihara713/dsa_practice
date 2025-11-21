@@ -1,77 +1,95 @@
 package queue
 
-import (
-	"testing"
-)
+import "testing"
 
-func TestQueue_EnqueueDequeue(t *testing.T) {
-	var q *Queue
+func TestQueue_Int(t *testing.T) {
+	q := NewQueue[int]()
 
-	tests := []struct {
-		enqueue []interface{}
-		dequeue []interface{}
-	}{
-		{
-			enqueue: []interface{}{1, 2, 3},
-			dequeue: []interface{}{1, 2, 3},
-		},
-		{
-			enqueue: []interface{}{"a", "b"},
-			dequeue: []interface{}{"a", "b"},
-		},
-		{
-			enqueue: []interface{}{true, false, true},
-			dequeue: []interface{}{true, false, true},
-		},
+	// enqueue
+	q.Enqueue(1)
+	q.Enqueue(2)
+	q.Enqueue(3)
+
+	// dequeue order
+	tests := []int{1, 2, 3}
+	for _, expected := range tests {
+		got := q.Dequeue()
+		if got != expected {
+			t.Fatalf("expected %v, got %v", expected, got)
+		}
 	}
 
-	for _, tt := range tests {
-		q = NewQueue()
+	if !q.Empty() {
+		t.Fatal("expected queue to be empty")
+	}
+}
 
-		// enqueue
-		for _, v := range tt.enqueue {
-			q.Enqueue(v)
-		}
+func TestQueue_String(t *testing.T) {
+	q := NewQueue[string]()
 
-		// dequeue and check FIFO order
-		for _, expected := range tt.dequeue {
-			got := q.Dequeue()
-			if got != expected {
-				t.Fatalf("expected %v, got %v", expected, got)
-			}
-		}
+	q.Enqueue("a")
+	q.Enqueue("b")
 
-		// after all dequeues, queue should be empty
-		if !q.Empty() {
-			t.Fatal("expected queue to be empty")
+	if q.Peek() != "a" {
+		t.Fatalf("expected peek=a, got %v", q.Peek())
+	}
+
+	if q.Dequeue() != "a" {
+		t.Fatal("expected a")
+	}
+
+	if q.Dequeue() != "b" {
+		t.Fatal("expected b")
+	}
+
+	if !q.Empty() {
+		t.Fatal("queue should be empty")
+	}
+}
+
+func TestQueue_Bool(t *testing.T) {
+	q := NewQueue[bool]()
+
+	q.Enqueue(true)
+	q.Enqueue(false)
+	q.Enqueue(true)
+
+	expected := []bool{true, false, true}
+	for _, exp := range expected {
+		if got := q.Dequeue(); got != exp {
+			t.Fatalf("expected %v, got %v", exp, got)
 		}
+	}
+
+	if !q.Empty() {
+		t.Fatal("expected queue to be empty")
 	}
 }
 
 func TestQueue_Peek(t *testing.T) {
-	q := NewQueue()
+	q := NewQueue[int]()
 
-	// peek empty
-	if q.Peek() != nil {
-		t.Fatal("expected nil on empty peek")
+	// peek empty should give zero int → 0
+	if v := q.Peek(); v != 0 {
+		t.Fatalf("expected zero value, got %v", v)
 	}
 
 	q.Enqueue(10)
 	q.Enqueue(20)
 
-	// peek must return first element
 	if v := q.Peek(); v != 10 {
 		t.Fatalf("expected peek=10, got %v", v)
 	}
 
-	// size should not change
+	// ensure size unchanged
 	if q.Size() != 2 {
 		t.Fatalf("expected size=2, got %d", q.Size())
 	}
 }
 
 func TestQueue_Empty(t *testing.T) {
-	q := NewQueue()
+	q := NewQueue[int]()
+
 	if !q.Empty() {
 		t.Fatal("expected empty queue")
 	}
@@ -88,7 +106,7 @@ func TestQueue_Empty(t *testing.T) {
 }
 
 func TestQueue_Size(t *testing.T) {
-	q := NewQueue()
+	q := NewQueue[int]()
 
 	if q.Size() != 0 {
 		t.Fatalf("expected size 0, got %d", q.Size())
@@ -102,17 +120,16 @@ func TestQueue_Size(t *testing.T) {
 	}
 
 	q.Dequeue()
-
 	if q.Size() != 1 {
 		t.Fatalf("expected size 1, got %d", q.Size())
 	}
 }
 
-func TestQueue_DequeueEmpty(t *testing.T) {
-	q := NewQueue()
+func TestQueue_Dequeue_Empty(t *testing.T) {
+	q := NewQueue[string]()
 
-	val := q.Dequeue()
-	if val != nil {
-		t.Fatalf("expected nil when dequeue empty queue, got %v", val)
+	val := q.Dequeue() // zero value → ""
+	if val != "" {
+		t.Fatalf("expected zero value when dequeue empty, got %v", val)
 	}
 }
