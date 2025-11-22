@@ -1,10 +1,11 @@
 package tree
 
 import (
+	"github.com/harry713j/dsa_practice/constraints"
 	"github.com/harry713j/dsa_practice/impl/queue"
 )
 
-type Node[T comparable] interface {
+type Node[T constraints.Ordered] interface {
 	Key() T
 	Left() Node[T]
 	Right() Node[T]
@@ -13,7 +14,7 @@ type Node[T comparable] interface {
 // preorder traversal
 
 // Recursive PreOrder, time: O(n), space: O(log n) to O(n)
-func preOrderRecursiveHelper[T comparable](node, nilNode Node[T], res []T) {
+func preOrderRecursiveHelper[T constraints.Ordered](node, nilNode Node[T], res []T) {
 	if node == nilNode {
 		return
 	}
@@ -25,7 +26,7 @@ func preOrderRecursiveHelper[T comparable](node, nilNode Node[T], res []T) {
 }
 
 // Iterative Preorder
-func preOrderHelper[T comparable](node, nilNode Node[T]) []T {
+func preOrderHelper[T constraints.Ordered](node, nilNode Node[T]) []T {
 	// stack to store the nodes
 	var stack []Node[T]
 	var res []T // store the result
@@ -49,7 +50,7 @@ func preOrderHelper[T comparable](node, nilNode Node[T]) []T {
 // in-order traversal
 
 // Recursive InOrder, time: O(n) space: O(log n) to O(n)
-func inOrderRecursiveHelper[T comparable](node, nilNode Node[T], res []T) {
+func inOrderRecursiveHelper[T constraints.Ordered](node, nilNode Node[T], res []T) {
 	if node == nilNode {
 		return
 	}
@@ -60,7 +61,7 @@ func inOrderRecursiveHelper[T comparable](node, nilNode Node[T], res []T) {
 }
 
 // Iterative InOrder
-func inOrderHelper[T comparable](node, nilNode Node[T]) []T {
+func inOrderHelper[T constraints.Ordered](node, nilNode Node[T]) []T {
 	// stack to store the nodes
 	var stack []Node[T]
 	var res []T // store the result
@@ -84,7 +85,7 @@ func inOrderHelper[T comparable](node, nilNode Node[T]) []T {
 // post-order traversal
 
 // Recursive PostOrder, time: O(n) space: O(log n) to O(n)
-func postOrderRecursiveHelper[T comparable](node, nilNode Node[T], res []T) {
+func postOrderRecursiveHelper[T constraints.Ordered](node, nilNode Node[T], res []T) {
 	if node == nilNode {
 		return
 	}
@@ -95,7 +96,7 @@ func postOrderRecursiveHelper[T comparable](node, nilNode Node[T], res []T) {
 }
 
 // Iterative PostOrder
-func postOrderTwoStackHelper[T comparable](node, nilNode Node[T]) []T {
+func postOrderTwoStackHelper[T constraints.Ordered](node, nilNode Node[T]) []T {
 	// two stack, in first, add left then right node, on each iteration pop the top and add add to second stack
 	// and repeat the operation
 	var st1, st2 []Node[T]
@@ -129,7 +130,7 @@ func postOrderTwoStackHelper[T comparable](node, nilNode Node[T]) []T {
 	return res
 }
 
-func postOrderOneStackHelper[T comparable](node, nilNode Node[T]) []T {
+func postOrderOneStackHelper[T constraints.Ordered](node, nilNode Node[T]) []T {
 	var stack []Node[T]
 	var res []T
 	// go left until we got right, then go left
@@ -166,7 +167,7 @@ func postOrderOneStackHelper[T comparable](node, nilNode Node[T]) []T {
 }
 
 // level order traversal
-func levelOrderHelper[T comparable](node, nilNode Node[T]) []T {
+func levelOrderHelper[T constraints.Ordered](node, nilNode Node[T]) []T {
 	// using a queue iteratively
 	q := queue.NewQueue[Node[T]]()
 	var res []T
@@ -190,7 +191,7 @@ func levelOrderHelper[T comparable](node, nilNode Node[T]) []T {
 	return res
 }
 
-func calculateDepthHelper[T comparable](node, nilNode Node[T]) int {
+func calculateDepthHelper[T constraints.Ordered](node, nilNode Node[T]) int {
 	if node == nilNode {
 		return 0
 	}
@@ -203,4 +204,24 @@ func calculateDepthHelper[T comparable](node, nilNode Node[T]) int {
 	} else {
 		return y + 1
 	}
+}
+
+// returns the in-order predecessor of a node in binary search tree
+func inOrderPredecessor[T constraints.Ordered](node, nilNode Node[T]) Node[T] {
+	// in order predecessor present in extreme right of the node
+	if node.Right() == nilNode {
+		return node
+	}
+
+	return inOrderPredecessor(node.Right(), nilNode)
+}
+
+// returns the in order successor of a node in the binary search tree
+func inOrderSuccessor[T constraints.Ordered](node, nilNode Node[T]) Node[T] {
+	// in order successor present in extreme left of the node
+	if node.Left() == nilNode {
+		return node
+	}
+
+	return inOrderSuccessor(node.Left(), nilNode)
 }

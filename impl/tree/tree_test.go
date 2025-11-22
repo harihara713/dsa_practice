@@ -67,3 +67,47 @@ func TestDepth(t *testing.T) {
 		t.Fatalf("Depth = %d, expected %d", got, 3)
 	}
 }
+
+func TestInOrderPredecessor(t *testing.T) {
+	nilNode := (*BSTNode[int])(nil)
+
+	bst := NewBST[int]()
+	bst.Insert([]int{20, 10, 30, 25, 5, 15, 7}...)
+
+	// predecessor of 20 should be 10
+	pred := inOrderPredecessor(bst.Root.left, nilNode)
+	if pred.Key() != 15 {
+		t.Fatalf("expected predecessor of root to be 15, got %v", pred.Key())
+	}
+
+	// predecessor of 25 (no right subtree) is 25 itself (your logic)
+	pred = inOrderPredecessor[int](bst.Root.left.left, nilNode)
+	if pred.Key() != 7 {
+		t.Fatalf("expected predecessor of 10 to be 7, got %v", pred.Key())
+	}
+}
+
+func TestInOrderSuccessor(t *testing.T) {
+	nilNode := (*BSTNode[int])(nil)
+
+	/*
+	      20
+	    /    \
+	   10    30
+	        /  \
+	       25  40
+	*/
+
+	bst := NewBST[int]()
+	bst.Insert([]int{20, 10, 30, 25, 40, 35}...)
+
+	suc := inOrderSuccessor(bst.Root.right, nilNode)
+	if suc.Key() != 25 {
+		t.Fatalf("expected successor of root to be 25 got %v", suc.Key())
+	}
+
+	suc = inOrderSuccessor(bst.Root.right.right, nilNode)
+	if suc.Key() != 35 {
+		t.Fatalf("expected successor of 30 to be 35 got %v", suc.Key())
+	}
+}

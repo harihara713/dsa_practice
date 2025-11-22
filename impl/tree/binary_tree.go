@@ -1,15 +1,18 @@
 package tree
 
-import "github.com/harry713j/dsa_practice/impl/queue"
+import (
+	"github.com/harry713j/dsa_practice/constraints"
+	"github.com/harry713j/dsa_practice/impl/queue"
+)
 
 // Binary tree node
-type BiTreeNode[T comparable] struct {
+type BiTreeNode[T constraints.Ordered] struct {
 	key   T
 	left  *BiTreeNode[T]
 	right *BiTreeNode[T]
 }
 
-func newBiTreeNode[T comparable](key T, left *BiTreeNode[T], right *BiTreeNode[T]) *BiTreeNode[T] {
+func newBiTreeNode[T constraints.Ordered](key T, left *BiTreeNode[T], right *BiTreeNode[T]) *BiTreeNode[T] {
 	return &BiTreeNode[T]{
 		key:   key,
 		left:  left,
@@ -30,12 +33,12 @@ func (n *BiTreeNode[T]) Right() Node[T] {
 }
 
 // Binary tree
-type BiTree[T comparable] struct {
+type BiTree[T constraints.Ordered] struct {
 	root *BiTreeNode[T]
 	NIL  *BiTreeNode[T] // a sentinel value to compare for nil
 }
 
-func NewBinaryTree[T comparable]() *BiTree[T] {
+func NewBinaryTree[T constraints.Ordered]() *BiTree[T] {
 	return &BiTree[T]{root: nil, NIL: nil}
 }
 
@@ -44,7 +47,7 @@ func (t *BiTree[T]) Empty() bool {
 	return t.root == t.NIL
 }
 
-// Insert a node to the tree, if value == NIL of then stop inserting for that node
+// Insert a node or a slice of node keys to the tree, if value == NIL of then stop inserting for that node
 func (t *BiTree[T]) Insert(keys ...T) {
 	for _, key := range keys {
 		t.insertHelper(t.root, key)
