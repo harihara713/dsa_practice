@@ -4,7 +4,7 @@ import "fmt"
 
 type ArrayStack struct {
 	data []int // store the data
-	size int   // caoacity of the stack
+	size int   // capacity of the stack
 	// pointing to the top of the stack
 	top int
 }
