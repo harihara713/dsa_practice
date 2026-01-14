@@ -35,6 +35,22 @@ func InsertionSort[T constraints.Ordered](arr []T) {
 	}
 }
 
+// Selection Sort Algorithm, Time: O(n^2)
+func SelectionSort[T constraints.Ordered](arr []T) {
+	n := len(arr)
+	for i := 0; i < n-1; i++ {
+		k := i
+		for j := i; j < n; j++ {
+			if arr[j] < arr[k] {
+				k = j
+			}
+		}
+
+		// swap
+		swap(arr, i, k)
+	}
+}
+
 func swap[T constraints.Ordered](arr []T, a, b int) {
 	arr[a], arr[b] = arr[b], arr[a]
 }
