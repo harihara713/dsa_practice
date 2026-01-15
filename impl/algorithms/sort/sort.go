@@ -51,6 +51,45 @@ func SelectionSort[T constraints.Ordered](arr []T) {
 	}
 }
 
+// Quick Sort Algorithm, Worst Time: O(n^2) when array is sorted, Avg Time: O(nlogn)
+func QuickSort[T constraints.Ordered](arr []T) {
+	n := len(arr)
+	quickSort(arr, 0, n-1)
+}
+
+func quickSort[T constraints.Ordered](arr []T, low, high int) {
+	if high-low+1 <= 1 {
+		return
+	}
+
+	p := partition(arr, low, high)
+	quickSort(arr, low, p-1)
+	quickSort(arr, p+1, high)
+}
+
+func partition[T constraints.Ordered](arr []T, l, h int) int {
+	pivot := arr[l]
+	i, j := l, h
+
+	for i < j {
+		for i <= h && arr[i] <= pivot {
+			i++
+		}
+
+		for j >= l && arr[j] > pivot {
+			j--
+		}
+
+		if i < j {
+			swap(arr, i, j)
+		}
+	}
+
+	// put pivot in its right position
+	swap(arr, l, j)
+	return j
+}
+
 func swap[T constraints.Ordered](arr []T, a, b int) {
 	arr[a], arr[b] = arr[b], arr[a]
 }
