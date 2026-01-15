@@ -1,6 +1,8 @@
 package sort
 
-import "github.com/harry713j/dsa_practice/constraints"
+import (
+	"github.com/harry713j/dsa_practice/constraints"
+)
 
 // Bubble Sort Algorithm, Time: O(n^2)
 func BubbleSort[T constraints.Ordered](arr []T) {
@@ -82,12 +84,80 @@ func partition[T constraints.Ordered](arr []T, l, h int) int {
 
 		if i < j {
 			swap(arr, i, j)
+			i++
+			j--
 		}
 	}
 
 	// put pivot in its right position
 	swap(arr, l, j)
 	return j
+}
+
+// Merge Sort Algorithm, Time: O(nlogn)
+func MergeSort[T constraints.Ordered](arr []T) {
+	n := len(arr)
+	mergeSort(arr, 0, n-1)
+}
+
+func mergeSort[T constraints.Ordered](arr []T, low, high int) {
+	if low >= high {
+		return
+	}
+
+	mid := (low + high) / 2
+	mergeSort(arr, low, mid)
+	mergeSort(arr, mid+1, high)
+	merge(arr, low, mid, high)
+}
+
+func merge[T constraints.Ordered](arr []T, low, mid, high int) {
+	temp := make([]T, high-low+1)
+	i, j, k := low, mid+1, 0
+
+	for i <= mid && j <= high {
+		if arr[i] < arr[j] {
+			temp[k] = arr[i]
+			i++
+		} else {
+			temp[k] = arr[j]
+			j++
+		}
+		k++
+	}
+
+	for ; i <= mid; i++ {
+		temp[k] = arr[i]
+		k++
+	}
+
+	for ; j <= high; j++ {
+		temp[k] = arr[j]
+		k++
+	}
+
+	// copy the temp to arr
+	for l := range temp {
+		arr[low+l] = temp[l]
+	}
+}
+
+func MergeSortIterative[T constraints.Ordered](arr []T) {
+	n := len(arr)
+	var p int
+
+	for p = 2; p <= n; p *= 2 {
+		for i := 0; i+p-1 < n; i = i + p {
+			low := i
+			high := i + p - 1
+			mid := (low + high) / 2
+			merge(arr, low, mid, high)
+		}
+	}
+
+	if p/2 < n {
+		merge(arr, 0, p/2-1, n-1)
+	}
 }
 
 func swap[T constraints.Ordered](arr []T, a, b int) {
