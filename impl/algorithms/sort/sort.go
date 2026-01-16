@@ -217,6 +217,39 @@ func BucketSort[T constraints.Unsigned](arr []T) {
 	}
 }
 
+// Radix Sort Algorithm, Time: O(n), Space: O(n)
+func RadixSort[T constraints.Unsigned](arr []T) {
+	n := len(arr)
+	max := maxNum(arr)
+	bin := make([]linkedlist.SinglyLinkedList[T], 10)
+
+	i := 1
+
+	for T(i) < max {
+		for j := 0; j < n; j++ {
+			bin[(arr[j]/T(i))%10].Append(arr[j])
+		}
+
+		// put it to the arr
+		var l int
+		for k := range bin {
+			var z linkedlist.SinglyLinkedList[T]
+			for bin[k] != z {
+				val, err := bin[k].Delete(0)
+				if err != nil {
+					fmt.Println("Error ", err)
+					return
+				}
+
+				arr[l] = val
+				l++
+			}
+		}
+
+		i = i * 10
+	}
+}
+
 func swap[T constraints.Ordered](arr []T, a, b int) {
 	arr[a], arr[b] = arr[b], arr[a]
 }

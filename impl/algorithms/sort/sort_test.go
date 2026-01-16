@@ -1,6 +1,7 @@
 package sort
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -279,6 +280,47 @@ func TestBucketSort(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			BucketSort(tt.arr)
+
+			if !reflect.DeepEqual(tt.arr, tt.want) {
+				t.Fatalf("expected = %v, got = %v\n", tt.want, tt.arr)
+			}
+		})
+	}
+}
+
+func TestRadixSort(t *testing.T) {
+	tests := []struct {
+		name string
+		arr  []uint
+		want []uint
+	}{
+		{
+			name: "Unsorted",
+			arr:  []uint{40, 30, 5, 15, 11, 13},
+			want: []uint{5, 11, 13, 15, 30, 40},
+		},
+		{
+			name: "Already sorted",
+			arr:  []uint{1, 3, 6, 15, 23},
+			want: []uint{1, 3, 6, 15, 23},
+		},
+		{
+			name: "Descending Sorted",
+			arr:  []uint{50, 40, 30, 20, 10},
+			want: []uint{10, 20, 30, 40, 50},
+		},
+		{
+			name: "Unsorted mixed",
+			arr:  []uint{148, 199, 21, 43, 69, 13, 7, 85, 302},
+			want: []uint{7, 13, 21, 43, 69, 85, 148, 199, 302},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			RadixSort(tt.arr)
+
+			fmt.Println(tt.arr)
 
 			if !reflect.DeepEqual(tt.arr, tt.want) {
 				t.Fatalf("expected = %v, got = %v\n", tt.want, tt.arr)
