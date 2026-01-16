@@ -250,6 +250,29 @@ func RadixSort[T constraints.Unsigned](arr []T) {
 	}
 }
 
+// Shell Sort Algorithm, Time: O(nlogn),
+// Based on the idea of Insertion Sort
+func ShellSort[T constraints.Ordered](arr []T) {
+	n := len(arr)
+	gap := n / 2
+
+	for gap > 0 {
+		for i := 0; i+gap < n; i++ {
+			if arr[i+gap] < arr[i] {
+				swap(arr, i, i+gap)
+				// also check previous elements
+				j := i
+				for j-gap >= 0 && arr[j] < arr[j-gap] {
+					swap(arr, j-gap, j)
+					j = j - gap
+				}
+			}
+		}
+
+		gap = gap / 2
+	}
+}
+
 func swap[T constraints.Ordered](arr []T, a, b int) {
 	arr[a], arr[b] = arr[b], arr[a]
 }
