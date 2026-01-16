@@ -187,7 +187,7 @@ func TestSinglyLinkedList_Delete(t *testing.T) {
 				ll.Append(v)
 			}
 
-			err := ll.Delete(tt.pos)
+			_, err := ll.Delete(tt.pos)
 			if tt.expectErr {
 				if err == nil {
 					t.Fatalf("expected error but got nil")

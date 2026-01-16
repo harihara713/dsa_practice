@@ -31,7 +31,7 @@ func NewSinglyLinkedList[T any]() *SinglyLinkedList[T] {
 // Append a new node to the end of the singly linked list
 func (l *SinglyLinkedList[T]) Append(value T) {
 	// head could be null
-	node := newSingleNode[T](value)
+	node := newSingleNode(value)
 
 	if l.head == nil {
 		l.head = node
@@ -99,24 +99,27 @@ func (l *SinglyLinkedList[T]) Get(pos int) (T, error) {
 }
 
 // Delete the node at the specified position, if the position is out of bound then it returns the error
-func (l *SinglyLinkedList[T]) Delete(pos int) error {
+func (l *SinglyLinkedList[T]) Delete(pos int) (T, error) {
 	if pos < 0 || pos > l.size-1 {
-		return ErrPositionOutOfBound
+		var z T
+		return z, ErrPositionOutOfBound
 	}
 
 	if l.head == nil {
-		return nil
+		var z T
+		return z, nil
 	}
 
 	// if the position is head node
 	if pos == 0 {
+		val := l.head.value
 		temp := l.head
 		l.head = temp.next
 
 		// cut the link
 		temp.next = nil
 		l.size--
-		return nil
+		return val, nil
 	}
 
 	cur := l.head
@@ -124,9 +127,11 @@ func (l *SinglyLinkedList[T]) Delete(pos int) error {
 		cur = cur.next
 	}
 
+	val := cur.next.value
+
 	cur.next = cur.next.next
 	l.size--
-	return nil
+	return val, nil
 }
 
 // Return the size of the linked list

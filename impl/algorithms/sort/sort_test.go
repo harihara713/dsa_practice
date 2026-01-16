@@ -209,7 +209,7 @@ func TestMergeSortIterative(t *testing.T) {
 	}
 }
 
-func TestCountTest(t *testing.T) {
+func TestCountSort(t *testing.T) {
 	tests := []struct {
 		name string
 		arr  []uint
@@ -240,6 +240,45 @@ func TestCountTest(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			CountSort(tt.arr)
+
+			if !reflect.DeepEqual(tt.arr, tt.want) {
+				t.Fatalf("expected = %v, got = %v\n", tt.want, tt.arr)
+			}
+		})
+	}
+}
+
+func TestBucketSort(t *testing.T) {
+	tests := []struct {
+		name string
+		arr  []uint
+		want []uint
+	}{
+		{
+			name: "Unsorted",
+			arr:  []uint{40, 30, 5, 15, 11, 13},
+			want: []uint{5, 11, 13, 15, 30, 40},
+		},
+		{
+			name: "Already sorted",
+			arr:  []uint{1, 3, 6, 15, 23},
+			want: []uint{1, 3, 6, 15, 23},
+		},
+		{
+			name: "Descending Sorted",
+			arr:  []uint{50, 40, 30, 20, 10},
+			want: []uint{10, 20, 30, 40, 50},
+		},
+		{
+			name: "Unsorted mixed",
+			arr:  []uint{50, 20, 30, 10, 80, 90, 70, 60},
+			want: []uint{10, 20, 30, 50, 60, 70, 80, 90},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			BucketSort(tt.arr)
 
 			if !reflect.DeepEqual(tt.arr, tt.want) {
 				t.Fatalf("expected = %v, got = %v\n", tt.want, tt.arr)

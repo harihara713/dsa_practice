@@ -1,7 +1,10 @@
 package sort
 
 import (
+	"fmt"
+
 	"github.com/harry713j/dsa_practice/constraints"
+	"github.com/harry713j/dsa_practice/impl/linkedlist"
 )
 
 // Bubble Sort Algorithm, Time: O(n^2)
@@ -182,16 +185,37 @@ func CountSort[T constraints.Unsigned](arr []T) {
 	}
 }
 
-// func BucketSort[T constraints.Unsigned](arr []T) {
-// 	n := len(arr)
-// 	max := maxNum(arr)
-// 	bucket := make([]linkedlist.SinglyLinkedList, max+1)
+// Bucket Sort Algorithm, Time: O(n), Space: O(n)
+func BucketSort[T constraints.Unsigned](arr []T) {
+	n := len(arr)
+	max := maxNum(arr)
+	bucket := make([]linkedlist.SinglyLinkedList[T], max+1)
 
-// 	// initialize
-// 	for _, ll := range bucket {
-// 		ll.Append(0)
-// 	}
-// }
+	// initialize
+	for _, ll := range bucket {
+		ll.Append(0)
+	}
+
+	for i := 0; i < n; i++ {
+		bucket[arr[i]].Append(arr[i])
+	}
+
+	var j, k int
+	for j < len(bucket) {
+		var b linkedlist.SinglyLinkedList[T]
+		for bucket[j] != b {
+			val, err := bucket[j].Delete(0)
+			if err != nil {
+				fmt.Println("Error ", err)
+				return
+			}
+
+			arr[k] = val
+			k++
+		}
+		j++
+	}
+}
 
 func swap[T constraints.Ordered](arr []T, a, b int) {
 	arr[a], arr[b] = arr[b], arr[a]
