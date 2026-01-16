@@ -2,36 +2,36 @@ package linkedlist
 
 import "fmt"
 
-type singleNode struct {
-	value int
-	next  *singleNode
+type singleNode[T any] struct {
+	value T
+	next  *singleNode[T]
 }
 
-type SinglyLinkedList struct {
-	head *singleNode // pointing to the head of the list
-	size int         // current size of the linked list
+type SinglyLinkedList[T any] struct {
+	head *singleNode[T] // pointing to the head of the list
+	size int            // current size of the linked list
 }
 
 var ErrPositionOutOfBound = fmt.Errorf("position out of bound")
 
-func newSingleNode(value int) *singleNode {
-	return &singleNode{
+func newSingleNode[T any](value T) *singleNode[T] {
+	return &singleNode[T]{
 		value: value,
 		next:  nil,
 	}
 }
 
-func NewSinglyLinkedList() *SinglyLinkedList {
-	return &SinglyLinkedList{
+func NewSinglyLinkedList[T any]() *SinglyLinkedList[T] {
+	return &SinglyLinkedList[T]{
 		head: nil,
 		size: 0,
 	}
 }
 
 // Append a new node to the end of the singly linked list
-func (l *SinglyLinkedList) Append(value int) {
+func (l *SinglyLinkedList[T]) Append(value T) {
 	// head could be null
-	node := newSingleNode(value)
+	node := newSingleNode[T](value)
 
 	if l.head == nil {
 		l.head = node
@@ -51,7 +51,7 @@ func (l *SinglyLinkedList) Append(value int) {
 
 // Insert the node with value to the specified position in the singly linked list, if the
 // position is out of bound then it will return an error value otherwise nil
-func (l *SinglyLinkedList) Insert(pos int, value int) error {
+func (l *SinglyLinkedList[T]) Insert(pos int, value T) error {
 	if pos < 0 || pos > l.size {
 		return ErrPositionOutOfBound
 	}
@@ -61,7 +61,7 @@ func (l *SinglyLinkedList) Insert(pos int, value int) error {
 		return nil
 	}
 
-	node := newSingleNode(value)
+	node := newSingleNode[T](value)
 	current := l.head
 
 	if pos == 0 {
@@ -84,9 +84,10 @@ func (l *SinglyLinkedList) Insert(pos int, value int) error {
 
 // Return the value of the node at the specified position in the list,
 // if the position is out of bound it will return an error with value -1
-func (l *SinglyLinkedList) Get(pos int) (int, error) {
+func (l *SinglyLinkedList[T]) Get(pos int) (T, error) {
 	if pos < 0 || pos > l.size-1 {
-		return -1, ErrPositionOutOfBound
+		var z T
+		return z, ErrPositionOutOfBound
 	}
 
 	cur := l.head
@@ -98,7 +99,7 @@ func (l *SinglyLinkedList) Get(pos int) (int, error) {
 }
 
 // Delete the node at the specified position, if the position is out of bound then it returns the error
-func (l *SinglyLinkedList) Delete(pos int) error {
+func (l *SinglyLinkedList[T]) Delete(pos int) error {
 	if pos < 0 || pos > l.size-1 {
 		return ErrPositionOutOfBound
 	}
@@ -129,17 +130,17 @@ func (l *SinglyLinkedList) Delete(pos int) error {
 }
 
 // Return the size of the linked list
-func (l *SinglyLinkedList) Size() int {
+func (l *SinglyLinkedList[T]) Size() int {
 	return l.size
 }
 
 // Print the content
-func (l *SinglyLinkedList) String() string {
+func (l *SinglyLinkedList[T]) String() string {
 	cur := l.head
 	out := ""
 
 	for cur != nil {
-		out += fmt.Sprintf("%d -> ", cur.value)
+		out += fmt.Sprintf("%v -> ", cur.value)
 		cur = cur.next
 	}
 

@@ -160,6 +160,51 @@ func MergeSortIterative[T constraints.Ordered](arr []T) {
 	}
 }
 
+// Count Sort Algorithm, Time: O(n), Space: O(n)
+func CountSort[T constraints.Unsigned](arr []T) {
+	n := len(arr)
+	max := maxNum(arr)
+	count := make([]int, max+1)
+
+	for i := 0; i < n; i++ {
+		count[arr[i]]++
+	}
+
+	var j, k int
+	for j < len(count) {
+		if count[j] != 0 {
+			arr[k] = T(j)
+			count[j]--
+			k++
+		} else {
+			j++
+		}
+	}
+}
+
+// func BucketSort[T constraints.Unsigned](arr []T) {
+// 	n := len(arr)
+// 	max := maxNum(arr)
+// 	bucket := make([]linkedlist.SinglyLinkedList, max+1)
+
+// 	// initialize
+// 	for _, ll := range bucket {
+// 		ll.Append(0)
+// 	}
+// }
+
 func swap[T constraints.Ordered](arr []T, a, b int) {
 	arr[a], arr[b] = arr[b], arr[a]
+}
+
+func maxNum[T constraints.Number](arr []T) T {
+	max := arr[0]
+
+	for i := 1; i < len(arr); i++ {
+		if arr[i] > max {
+			max = arr[i]
+		}
+	}
+
+	return max
 }

@@ -17,7 +17,7 @@ func TestSinglyLinkedList_Append(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ll := NewSinglyLinkedList()
+			ll := NewSinglyLinkedList[int]()
 			for _, v := range tt.values {
 				ll.Append(v)
 			}
@@ -82,7 +82,7 @@ func TestSinglyLinkedList_Insert(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ll := NewSinglyLinkedList()
+			ll := NewSinglyLinkedList[int]()
 			for _, v := range tt.initial {
 				ll.Append(v)
 			}
@@ -109,7 +109,7 @@ func TestSinglyLinkedList_Insert(t *testing.T) {
 }
 
 func TestSinglyLinkedList_Get(t *testing.T) {
-	ll := NewSinglyLinkedList()
+	ll := NewSinglyLinkedList[int]()
 	ll.Append(1)
 	ll.Append(2)
 	ll.Append(3)
@@ -181,7 +181,7 @@ func TestSinglyLinkedList_Delete(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ll := NewSinglyLinkedList()
+			ll := NewSinglyLinkedList[int]()
 
 			for _, v := range tt.initial {
 				ll.Append(v)
