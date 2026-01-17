@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/harry713j/dsa_practice/constraints"
-	"github.com/harry713j/dsa_practice/impl/linkedlist"
+	"github.com/harry713j/dsa_practice/structure/linkedlist"
 )
 
 // Bubble Sort Algorithm, Time: O(n^2)

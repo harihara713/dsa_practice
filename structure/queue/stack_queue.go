@@ -3,7 +3,7 @@ package queue
 import (
 	"fmt"
 
-	"github.com/harry713j/dsa_practice/impl/stack"
+	"github.com/harry713j/dsa_practice/structure/stack"
 )
 
 // Queue using stack

@@ -2,7 +2,7 @@ package tree
 
 import (
 	"github.com/harry713j/dsa_practice/constraints"
-	"github.com/harry713j/dsa_practice/impl/queue"
+	"github.com/harry713j/dsa_practice/structure/queue"
 )
 
 // Binary tree node

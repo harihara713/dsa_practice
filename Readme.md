@@ -4,17 +4,17 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 ## 1. Linear Data Structures
 
-- Array / Dynamic Array
-- String
-- Linked List
-- Singly Linked List
-- Doubly Linked List
-- Circular Linked List
-- Stack
-- Queue
-- Normal Queue
-- Circular Queue
-- Deque (Double-ended queue)
+- Array / Dynamic Array [X]
+- String 
+- Linked List [X]
+- Singly Linked List [X]
+- Doubly Linked List [X]
+- Circular Linked List [X]
+- Stack [X]
+- Queue [X]
+- Normal Queue [X]
+- Circular Queue [X]
+- Deque (Double-ended queue) [X]
 
 ## 2. Hash-Based Structures
 
@@ -24,9 +24,9 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 ## 3. Tree Data Structures
 
-- Binary Tree
-- Binary Search Tree (BST)
-- AVL Tree (Optional)
+- Binary Tree [X]
+- Binary Search Tree (BST) [X]
+- AVL Tree (Optional) [X]
 - Red-Black Tree (Optional)
 - Trie (Prefix Tree)
 - Segment Tree
@@ -34,8 +34,8 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 ## 4. Heap Structures
 
-- Min Heap
-- Max Heap
+- Min Heap [X]
+- Max Heap [X]
 - Priority Queue
 
 ## 5. Graph Representations
@@ -72,14 +72,14 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 ## 3. Sorting Algorithms
 
-- Bubble Sort
-- Selection Sort
-- Insertion Sort
-- Merge Sort
-- Quick Sort
-- Heap Sort
-- Counting Sort
-- Radix Sort (Optional)
+- Bubble Sort [X]
+- Selection Sort [X]
+- Insertion Sort [X]
+- Merge Sort [X]
+- Quick Sort [X]
+- Heap Sort [X]
+- Counting Sort [X]
+- Radix Sort (Optional) [X]
 
 ## 4. Searching Algorithms
 
@@ -109,10 +109,10 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 ## 8. Tree Algorithms
 
-- Inorder traversal
-- Preorder traversal
-- Postorder traversal
-- Level order (BFS)
+- Inorder traversal [X]
+- Preorder traversal [X]
+- Postorder traversal [X]
+- Level order (BFS) [X]
 - Diameter of tree
 - Height and depth
 - Lowest Common Ancestor (LCA)
