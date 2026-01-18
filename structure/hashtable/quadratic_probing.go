@@ -12,8 +12,8 @@ type HTQP struct {
 // Hash table using linear probing with default capacity 10
 func NewHTQP() *HTQP {
 	return &HTQP{
-		cap:   defaultHtlpCapacity,
-		table: make([]int, defaultHtlpCapacity),
+		cap:   defaultHtqpCapacity,
+		table: make([]int, defaultHtqpCapacity),
 	}
 }
 

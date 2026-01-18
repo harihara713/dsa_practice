@@ -20,7 +20,7 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 - HashMap / Dictionary
 - HashSet
-- Custom Hash Table Implementation (Chaining)
+- Custom Hash Table Implementation (Chaining) [X]
 
 ## 3. Tree Data Structures
 
@@ -109,10 +109,10 @@ Github repo for best go practices for DSA - [The Algorithms](https://github.com/
 
 ## 8. Tree Algorithms
 
-- Inorder traversal [X]
-- Preorder traversal [X]
-- Postorder traversal [X]
-- Level order (BFS) [X]
+- [X] Inorder traversal 
+- [X] Preorder traversal 
+- [X] Postorder traversal 
+- [X] Level order (BFS) 
 - Diameter of tree
 - Height and depth
 - Lowest Common Ancestor (LCA)
