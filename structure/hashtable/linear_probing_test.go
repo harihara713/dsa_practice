@@ -5,16 +5,16 @@ import (
 	"testing"
 )
 
-func TestInsertHTC(t *testing.T) {
+func TestInsertHTLP(t *testing.T) {
 	keys := []int{11, 31, 13, 17, 46, 78, 67, 55}
-	h := NewHTC()
+	h := NewHTLP()
 
 	for _, k := range keys {
 		h.Insert(k)
 	}
 
-	expected := [][]int{
-		{}, {11, 31}, {}, {13}, {}, {55}, {46}, {17, 67}, {78}, {},
+	expected := []int{
+		0, 0, 0, 0, 0, 0, 46, 67, 0, 0, 0, 11, 31, 13, 0, 55, 0, 17, 78, 0,
 	}
 
 	if !reflect.DeepEqual(expected, h.table) {
@@ -22,21 +22,21 @@ func TestInsertHTC(t *testing.T) {
 	}
 }
 
-func TestGetHTC(t *testing.T) {
+func TestGetHTLP(t *testing.T) {
 	keys := []int{11, 31, 13, 17, 46, 78, 67, 55}
-	h := NewHTC()
+	h := NewHTLP()
 
 	for _, k := range keys {
 		h.Insert(k)
 	}
 
-	expected := 1
+	expected := 11
 	got := h.Get(11)
 	if got != expected {
 		t.Fatalf("expected = %d, got = %d\n", expected, got)
 	}
 
-	expected = 7
+	expected = 67
 	got = h.Get(67)
 	if got != expected {
 		t.Fatalf("expected = %d, got = %d\n", expected, got)
@@ -49,9 +49,9 @@ func TestGetHTC(t *testing.T) {
 	}
 }
 
-func TestContainsHTC(t *testing.T) {
+func TestContainsHTLP(t *testing.T) {
 	keys := []int{11, 31, 13, 17, 46, 78, 67, 55}
-	h := NewHTC()
+	h := NewHTLP()
 
 	for _, k := range keys {
 		h.Insert(k)
@@ -76,9 +76,9 @@ func TestContainsHTC(t *testing.T) {
 	}
 }
 
-func TestDeleteHTC(t *testing.T) {
+func TestDeleteHTLP(t *testing.T) {
 	keys := []int{11, 31, 13, 17, 46, 78, 67, 55}
-	h := NewHTC()
+	h := NewHTLP()
 
 	for _, k := range keys {
 		h.Insert(k)
@@ -102,8 +102,8 @@ func TestDeleteHTC(t *testing.T) {
 		t.Fatalf("expected = %d, got = %d\n", expected, got)
 	}
 
-	expTable := [][]int{
-		{}, {11}, {}, {13}, {}, {55}, {46}, {17}, {78}, {},
+	expTable := []int{
+		0, 0, 0, 0, 0, 0, 46, 0, 0, 0, 0, 11, 0, 13, 0, 55, 0, 17, 78, 0,
 	}
 
 	if !reflect.DeepEqual(expTable, h.table) {

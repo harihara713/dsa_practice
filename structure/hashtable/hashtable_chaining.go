@@ -1,17 +1,17 @@
 package hashtable
 
+var defaultHtcCapacity = 10
+
 // Hash Table with Chaining
 type HTC struct {
 	cap   int
 	table [][]int
 }
 
-// Put, Search, Delete, hash function
-
 func NewHTC() *HTC {
 	h := &HTC{
-		cap:   10,
-		table: make([][]int, 10),
+		cap:   defaultHtcCapacity,
+		table: make([][]int, defaultHtcCapacity),
 	}
 
 	for i := range h.table {
