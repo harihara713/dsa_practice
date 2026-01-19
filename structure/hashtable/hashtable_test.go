@@ -25,7 +25,6 @@ func TestHashtable_BasicOperations(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ht.Put(tt.key, tt.value)
-			fmt.Printf("ht: %+v\n", ht)
 
 			got := ht.Get(tt.key)
 			if !reflect.DeepEqual(got, tt.wantGet) {
@@ -156,23 +155,3 @@ func TestHashtable_DeleteAfterResize(t *testing.T) {
 		t.Error("deleted key 2 still accessible")
 	}
 }
-
-// func TestHashtable_ZeroCapacityEdgeCase(t *testing.T) {
-// 	// Just to show behavior — normally not useful
-// 	ht := &Hashtable{
-// 		capacity: 0,
-// 		table:    make([]*Entry, 0),
-// 	}
-
-// 	ht.Put("key", "value") // should panic or behave badly — your code doesn't handle capacity=0
-
-// 	// Your current code will panic on modulo 0 in hash()
-// 	// This test just documents current behavior (panic expected)
-// 	defer func() {
-// 		if r := recover(); r == nil {
-// 			t.Error("expected panic on hash with capacity=0, but didn't panic")
-// 		}
-// 	}()
-
-// 	_ = ht.hash("key")
-// }

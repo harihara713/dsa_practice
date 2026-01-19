@@ -5,8 +5,6 @@ import (
 	"hash/fnv"
 )
 
-// TODO: Do this with `Double Hashing` Technique
-
 var defaultCapacity int = 13
 
 type Entry struct {
@@ -36,15 +34,8 @@ func (ht *Hashtable) Put(key, value any) {
 		return
 	}
 
-	idx = ht.hash(key)
-	fmt.Printf("key = %v, value = %v, idx = %d\n", key, value, idx)
-	if ht.table[idx] == nil {
-		ht.table[idx] = &Entry{key: key, value: value}
-	} else {
-		idx = ht.probe(key)
-		ht.table[idx] = &Entry{key: key, value: value}
-	}
-
+	idx = ht.probeIndex(key)
+	ht.table[idx] = &Entry{key: key, value: value}
 	ht.size++
 
 	loadingFactor := float32(ht.size) / float32(ht.capacity)
@@ -60,7 +51,6 @@ func (ht *Hashtable) Get(key any) any {
 		return nil
 	}
 
-	fmt.Printf("idx = %d\n", idx)
 	return ht.table[idx].value
 }
 
@@ -80,7 +70,7 @@ func (ht *Hashtable) Delete(key any) any {
 	val := ht.table[idx].value
 	ht.table[idx] = nil
 
-	if idx != ht.hash(key) {
+	if idx != ht.probe(key, 0) {
 		oldTable := ht.table
 		ht.table = make([]*Entry, ht.capacity)
 		ht.size = 0
@@ -95,22 +85,33 @@ func (ht *Hashtable) Delete(key any) any {
 	return val
 }
 
-func (ht *Hashtable) hash(key any) int {
+func (ht *Hashtable) hash1(key any) int {
 	h := fnv.New32a()
 	h.Write([]byte(fmt.Sprintf("%v", key)))
 
 	hashVal := h.Sum32()
-	return int(hashVal) % ht.capacity
+	return int(hashVal)
 }
 
-func (ht *Hashtable) probe(key any) int {
-	idx := ht.hash(key)
+func (ht *Hashtable) hash2(key any) int {
+	h := fnv.New32()
+	h.Write([]byte(fmt.Sprintf("%v", key)))
+
+	pNum := lastPrime(ht.capacity)
+	return pNum - (int(h.Sum32()) % pNum)
+}
+
+func (ht *Hashtable) probeIndex(key any) int {
 	i := 0
-	for ht.table[idx+i*i] != nil {
+	for ht.table[ht.probe(key, i)] != nil {
 		i++
 	}
 
-	return idx + i*i
+	return ht.probe(key, i)
+}
+
+func (ht *Hashtable) probe(key any, i int) int {
+	return (ht.hash1(key) + i*ht.hash2(key)) % ht.capacity
 }
 
 func (ht *Hashtable) resize() {
@@ -128,15 +129,45 @@ func (ht *Hashtable) resize() {
 
 func (ht *Hashtable) searchKey(key any) (int, bool) {
 	i := 0
-	idx := ht.hash(key)
-	fmt.Printf("searchKey: idx = %d\n", idx)
-	for ht.table[idx+i*i] != nil {
-		fmt.Printf("searchKey: idx+i*i = %d\n", idx+i*i)
-		if key == ht.table[idx+i*i].key {
-			return idx + i*i, true
+	for ht.table[ht.probe(key, i)] != nil {
+		if key == ht.table[ht.probe(key, i)].key {
+			return ht.probe(key, i), true
 		}
 		i++
 	}
 
 	return -1, false
+}
+
+// return max prime number in a range
+func lastPrime(n int) int {
+	for i := n; i >= 2; i-- {
+		if prime(i) {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func prime(n int) bool {
+	if n < 2 {
+		return false
+	}
+
+	if n == 2 {
+		return true
+	}
+
+	if n%2 == 0 {
+		return false
+	}
+
+	for i := 3; i*i <= n; i += 2 {
+		if n%i == 0 {
+			return false
+		}
+	}
+
+	return true
 }
