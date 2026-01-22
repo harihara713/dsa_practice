@@ -121,3 +121,89 @@ func TestDirectedGraph(t *testing.T) {
 		t.Errorf("expected no duplicate edge to be added, got neighbors: %v", g.adj["A"])
 	}
 }
+
+func TestBFSGraph(t *testing.T) {
+	g := New[int](false) // undirected
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+
+	tests := []struct {
+		name   string
+		vertex int
+		want   []int
+	}{
+		{
+			name:   "Vertex not present in graph",
+			vertex: 7,
+			want:   []int{},
+		},
+		{
+			name:   "Vertex start with 1",
+			vertex: 1,
+			want:   []int{1, 2, 3, 4, 5},
+		},
+		{
+			name:   "Vertex start with 5",
+			vertex: 5,
+			want:   []int{5, 4, 2, 3, 1},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			res := g.BFS(tt.vertex)
+
+			if !reflect.DeepEqual(res, tt.want) {
+				t.Fatalf("BFS: expected = %v, got = %v", tt.want, res)
+			}
+		})
+	}
+}
+
+func TestDFSGraph(t *testing.T) {
+	g := New[int](false) // undirected
+
+	g.AddEdge(1, 2)
+	g.AddEdge(1, 3)
+	g.AddEdge(2, 4)
+	g.AddEdge(3, 4)
+	g.AddEdge(4, 5)
+
+	tests := []struct {
+		name   string
+		vertex int
+		want   []int
+	}{
+		{
+			name:   "Vertex not present in graph",
+			vertex: 7,
+			want:   []int{},
+		},
+		{
+			name:   "Vertex start with 1",
+			vertex: 1,
+			want:   []int{1, 2, 4, 3, 5},
+		},
+		{
+			name:   "Vertex start with 5",
+			vertex: 5,
+			want:   []int{5, 4, 2, 1, 3},
+		},
+	}
+
+	g.print()
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			res := g.DFS(tt.vertex)
+
+			if !reflect.DeepEqual(res, tt.want) {
+				t.Fatalf("DFS: expected = %v, got = %v", tt.want, res)
+			}
+		})
+	}
+}

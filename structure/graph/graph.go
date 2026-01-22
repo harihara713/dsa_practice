@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"fmt"
 	"slices"
 
 	"github.com/harry713j/dsa_practice/constraints"
@@ -40,5 +41,75 @@ func (g *Graph[T]) AddEdge(from, to T) {
 	// if the graph is undirected
 	if !g.directed {
 		g.adj[to] = append(g.adj[to], from)
+	}
+}
+
+// Breadth-First Search
+func (g *Graph[T]) BFS(v T) []T {
+	queue := make([]T, 0)
+	visited := make(map[T]bool, g.vertices)
+	res := make([]T, 0, g.vertices)
+
+	if _, exist := g.adj[v]; !exist {
+		return res
+	}
+
+	res = append(res, v)
+	visited[v] = true
+	queue = append(queue, v)
+
+	for len(queue) > 0 {
+		u := queue[0]
+		queue = queue[1:]
+
+		for _, e := range g.adj[u] {
+			if !visited[e] {
+				res = append(res, e)
+				visited[e] = true
+				queue = append(queue, e)
+			}
+		}
+	}
+
+	return res
+}
+
+// print
+func (g *Graph[T]) print() {
+	for k, v := range g.adj {
+		fmt.Printf("%v: [", k)
+		for _, e := range v {
+			fmt.Printf("%v ", e)
+		}
+		fmt.Print("]")
+		fmt.Println()
+	}
+}
+
+// Depth-First Search
+func (g *Graph[T]) DFS(v T) []T {
+	if _, exist := g.adj[v]; !exist {
+		return []T{}
+	}
+
+	res := make([]T, 0)
+	visited := make(map[T]bool, g.vertices)
+
+	g.dfsHelper(visited, &res, v)
+	return res
+}
+
+func (g *Graph[T]) dfsHelper(visited map[T]bool, res *[]T, v T) {
+	if visited[v] {
+		return
+	}
+
+	*res = append(*res, v)
+	visited[v] = true
+
+	for _, e := range g.adj[v] {
+		if !visited[e] {
+			g.dfsHelper(visited, res, e)
+		}
 	}
 }
