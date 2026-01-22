@@ -39,7 +39,7 @@ Github repo for best Go practices for DSA – [The Algorithms](https://github.co
 
 ## 5. Graph Representations
 
-- [] Adjacency List
+- [x] Adjacency List
 - [] Adjacency Matrix
 - [] Edge List
 
