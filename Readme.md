@@ -17,7 +17,7 @@ Github repo for best Go practices for DSA – [The Algorithms](https://github.co
 - [x] Deque (Double-ended queue)
 ## 2. Hash-Based Structures
 
-- [] HashMap / Dictionary
+- [x] HashMap / Dictionary
 - [] HashSet
 - [x] Custom Hash Table Implementation (Chaining)
 

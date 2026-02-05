@@ -1,3 +1,4 @@
 # Array & Hashing
 
 1. [Concatenation of Array](https://leetcode.com/problems/concatenation-of-array/) - Easy [Solution](./concatination_of_array.go)
+2. [Contains Duplicates](https://leetcode.com/problems/contains-duplicate/description/) - Easy [Solution](./contains_duplicate.go)
