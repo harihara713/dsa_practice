@@ -7,7 +7,7 @@ type UnionFind struct {
 }
 
 func NewUnionFind(s int) *UnionFind {
-	parent := make([]int, s)
+	parent := make([]int, s+1)
 
 	for i := 0; i < s; i++ {
 		parent[i] = -1 // -1 means every element is its own parent
