@@ -4,3 +4,4 @@
 2. [Contains Duplicates](https://leetcode.com/problems/contains-duplicate/description/) - Easy [Solution](./contains_duplicate.go)
 3. [Valid Anagram](https://leetcode.com/problems/valid-anagram/) - Easy [Solution](./valid_anagrams.go)
 4. [Two Sum](https://leetcode.com/problems/two-sum/description/) - Easy [Solution](./two_sum.go)
+5. [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/) - Easy [Solution](./longest_common_prefix.go)
